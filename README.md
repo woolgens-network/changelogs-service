@@ -1,4 +1,4 @@
-# quarkus-scaffold Project
+# Changelogs Service
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 

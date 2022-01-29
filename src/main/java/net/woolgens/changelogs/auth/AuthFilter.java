@@ -1,4 +1,4 @@
-package net.woolgens.scaffold.auth;
+package net.woolgens.changelogs.auth;
 
 import javax.inject.Inject;
 import javax.ws.rs.container.ContainerRequestContext;

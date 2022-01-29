@@ -1,9 +1,7 @@
-package net.woolgens.scaffold.auth;
+package net.woolgens.changelogs.auth;
 
 import io.quarkus.runtime.StartupEvent;
-import io.quarkus.security.spi.runtime.AuthorizationController;
 import lombok.Getter;
-import lombok.Setter;
 import net.woolgens.library.auth.AuthBootstrap;
 
 import javax.enterprise.context.ApplicationScoped;

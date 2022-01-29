@@ -1,4 +1,4 @@
-package net.woolgens.scaffold.auth;
+package net.woolgens.changelogs.auth;
 
 import io.quarkus.security.spi.runtime.AuthorizationController;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
