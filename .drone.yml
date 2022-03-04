@@ -29,6 +29,8 @@ services:
     image: mongo:4
     ports:
       - 27017
+
+
 ---
 kind: pipeline
 type: docker
@@ -45,8 +47,8 @@ steps:
     image: md5lukas/drone-mvn-settings
     settings:
       servers:
-        - id: woolgens-network
-          username: woolgens-default
+        - id: woolgens
+          username: woolgens
       serverSecrets:
         from_secret: WOOLGENS_NEXUS_CREDENTIALS
   - name: install
@@ -54,8 +56,22 @@ steps:
     depends_on: [settings, mongo]
     commands:
       - mvn -U package -s settings.xml
+  - name: delete
+    image: appleboy/drone-ssh
+    settings:
+      host:
+        from_secret: WOOLGENS_SERVER_HOST
+      port:
+        from_secret: WOOLGENS_SERVER_PORT
+      username:
+        from_secret: WOOLGENS_SERVER_USER
+      password:
+        from_secret: WOOLGENS_SERVER_PASSWORD
+      script:
+        - rm -R /home/services/changelogs-service/
+        - cp -r /home/services/template/ /home/services/changelogs-service/
   - name: deploy
-    depends_on: [install]
+    depends_on: [install, delete]
     image: appleboy/drone-scp
     settings:
       host:
@@ -66,7 +82,7 @@ steps:
         from_secret: WOOLGENS_SERVER_USER
       password:
         from_secret: WOOLGENS_SERVER_PASSWORD
-      target: /home/services/revamp/changelogs-service/app/
+      target: /home/services/changelogs-service/app/
       source: target/quarkus-app/*
       strip_components: 2
   - name: start
@@ -81,8 +97,11 @@ steps:
         from_secret: WOOLGENS_SERVER_USER
       password:
         from_secret: WOOLGENS_SERVER_PASSWORD
+      envs:
+        - SERVICE_NAME
       script:
-        - cd /home/services/revamp/changelogs-service/
+        - cd /home/services/changelogs-service/
+        - export SERVICE_NAME=changelogs
         - docker-compose down
         - docker-compose up -d --build
 
