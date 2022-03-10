@@ -1,13 +1,12 @@
 package net.woolgens.changelogs.resource;
 
-import net.woolgens.changelogs.exception.ChangelogsException;
 import net.woolgens.changelogs.model.Changelog;
 import net.woolgens.changelogs.repository.ChangelogsRepository;
+import net.woolgens.library.microservice.exception.ServiceException;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,10 +23,10 @@ public class ChangelogsResource {
 
     @GET
     @Path("{id}")
-    public Changelog get(@PathParam("id") String id) throws ChangelogsException {
+    public Changelog get(@PathParam("id") String id) throws ServiceException {
         Optional<Changelog> optional = repository.findByIdOptional(id);
         if(!optional.isPresent()) {
-            throw new ChangelogsException(404, "Changelog not found");
+            throw new ServiceException(404, "Changelog not found");
         }
         return optional.get();
     }

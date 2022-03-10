@@ -42,6 +42,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>net.woolgens.library</groupId>
+            <artifactId>microservice</artifactId>
+            <version>1.0.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-arc</artifactId>
         </dependency>
